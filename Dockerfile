@@ -124,7 +124,7 @@ RUN \
     && pecl install redis \
     && pecl install mongodb \
     && pecl install swoole \
-    && pecl install channel://pecl.php.net/zookeeper-0.3.2 \
+    && pecl install zookeeper-0.6.4 \
     && /var/pkg/sh/install-librdkafka \
     && pecl install rdkafka \
     && docker-php-ext-enable mcrypt zip redis mongodb swoole zookeeper rdkafka \
