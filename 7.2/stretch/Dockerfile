@@ -68,6 +68,12 @@ RUN \
         zlib1g-dev \
         gettext \
         #for php extend begin
+        libfreetype6-dev \
+        libmcrypt-dev \
+        libwebp-dev \
+        libjpeg-dev \
+        libpng-dev \
+        libfreetype6-dev \
         tar \
         wget \
         git \
@@ -117,6 +123,16 @@ RUN \
     && chown nobody /usr/local/openresty/nginx/afp_proxy_cache \ 
     #php modules install begin
     && mkdir -p /var/pkg/php-modules \
+    && docker-php-ext-configure gd \
+        --enable-gd-native-ttf \
+        --with-freetype-dir=/usr/include/freetype2 \
+        --with-png-dir=/usr/include \
+        --with-jpeg-dir=/usr/include \
+        --with-webp-dir=/usr/include/webp \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install iconv \
+    && docker-php-ext-install mbstring \
+    && docker-php-ext-install mysqli \
     && docker-php-ext-install opcache \
     && docker-php-ext-install pdo_mysql \
     && pecl install mcrypt-1.0.2 \
@@ -142,7 +158,7 @@ RUN \
 # Add additional binaries into PATH for convenience
 ENV PATH=$PATH:/usr/local/openresty/luajit/bin/:/usr/local/openresty/nginx/sbin/:/usr/local/openresty/bin/
 
-COPY php.ini /usr/local/etc/php/
+COPY php-dev.ini /usr/local/etc/php/php.ini
 COPY nginx.conf /usr/local/openresty/nginx/conf/
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 
